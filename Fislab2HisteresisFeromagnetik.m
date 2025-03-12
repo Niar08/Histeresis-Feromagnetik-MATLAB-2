@@ -1,5 +1,3 @@
-
-
 data = readtable ("C:\Users\HP\Downloads\Tabel Histeresis Feromagnetik 2.xlsx", 'VariableNamingRule', 'preserve'); 
 
 disp(data.Properties.VariableNames);
@@ -23,9 +21,24 @@ B = flux/A;
 
 figure;
 plot(H, B, 'b-o', 'LineWidth', 0.3, 'MarkerSize', 2);
-xlabel ('medan magnet, H (A/m)');
-ylabel('induksi magnetik, B (T)');
+xlabel ('medan magnet, H ');
+ylabel('induksi magnetik, B ');
 title('kurva histeresis feromagnetik');
 grid on
 
+%Luas di bawah kurva 
+H = H(~isnan(H));
+B = B(~isnan(B));
+luas_kurva = abs(trapz(H, B));
+disp(['Luas di bawah kurva:', num2str(luas_kurva)])
 
+%
+V = A*l;
+Eloss = luas_kurva*V;
+disp(['Energi yang hilang (Eloss): ', num2str(Eloss), 'joule']);
+
+% Menghitung ketidakpastian (standar deviasi)
+combined_data = [H; B];
+std_combined = std(combined_data);
+
+disp(['ketidakpastian: ', num2str(std_combined)])
